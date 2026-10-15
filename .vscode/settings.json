@@ -1,0 +1,7 @@
+{
+  "dotnet.defaultSolution": "BerserkerSets.csproj",
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  }
+}

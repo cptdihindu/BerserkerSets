@@ -1,0 +1,15 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+*.suo
+*.cache
+*.tmp
+*.bak
+*.dll
+*.pdb
+*.mdb
+packages/
+lib/
+GameAssemblies/

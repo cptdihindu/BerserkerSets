@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>BerserkerSets</AssemblyName>
+    <RootNamespace>BerserkerSets</RootNamespace>
+    <ValheimDir Condition="'$(ValheimDir)' == ''">D:\Games\Valheim</ValheimDir>
+    <PluginDeployDir Condition="'$(PluginDeployDir)' == ''">$(ValheimDir)\BepInEx\plugins\BerserkerSets</PluginDeployDir>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx" HintPath="$(ValheimDir)\BepInEx\core\BepInEx.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(ValheimDir)\BepInEx\core\0Harmony.dll" Private="false" />
+    <Reference Include="Jotunn" HintPath="$(ValheimDir)\BepInEx\plugins\Jotunn.dll" Private="false" />
+    <Reference Include="Assembly-CSharp" HintPath="$(ValheimDir)\valheim_Data\Managed\Assembly-CSharp.dll" Private="false" />
+    <Reference Include="assembly_utils" HintPath="$(ValheimDir)\valheim_Data\Managed\assembly_utils.dll" Private="false" />
+    <Reference Include="assembly_valheim" HintPath="$(ValheimDir)\valheim_Data\Managed\assembly_valheim.dll" Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.dll" Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.CoreModule.dll" Private="false" />
+    <Reference Include="UnityEngine.UI" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.UI.dll" Private="false" />
+    <Reference Include="UnityEngine.InputLegacyModule" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.InputLegacyModule.dll" Private="false" />
+    <Reference Include="UnityEngine.TextRenderingModule" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.TextRenderingModule.dll" Private="false" />
+    <Reference Include="UnityEngine.UIModule" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.UIModule.dll" Private="false" />
+    <Reference Include="Unity.InputSystem" HintPath="$(ValheimDir)\valheim_Data\Managed\Unity.InputSystem.dll" Private="false" />
+    <Reference Include="Newtonsoft.Json" HintPath="$(ValheimDir)\valheim_Data\Managed\Newtonsoft.Json.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="DeployToValheim" AfterTargets="Build">
+    <MakeDir Directories="$(PluginDeployDir)" />
+    <Delete Files="$(PluginDeployDir)\$(AssemblyName).dll" />
+    <Copy SourceFiles="$(TargetPath)"
+          DestinationFiles="$(PluginDeployDir)\$(AssemblyName).dll"
+          OverwriteReadOnlyFiles="true" />
+    <Message Importance="high"
+             Text="Deployed $(TargetFileName) to $(PluginDeployDir)" />
+  </Target>
+</Project>

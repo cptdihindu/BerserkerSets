@@ -1,0 +1,13 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build BerserkerSets",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/BerserkerSets.csproj"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
