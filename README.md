@@ -4,7 +4,9 @@
 
 ### ⚔ Five weapon sets. One warrior. Instant switching. ⚔
 
-**A lightweight, client-side quick-loadout mod for Valheim.**
+**A lightweight, quick-loadout mod for Valheim.**
+
+<img width="600" alt="Berserker Sets Viking Emblem-v2" src="https://github.com/user-attachments/assets/6ce963c3-8ecf-43f6-a546-6241408484b3" />
 
 </div>
 
