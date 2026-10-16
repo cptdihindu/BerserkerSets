@@ -16,7 +16,7 @@ namespace BerserkerSets
     {
         public const string PluginGuid = "dev.berserkersets.quickloadouts";
         public const string PluginName = "Berserker Sets";
-        public const string PluginVersion = "0.1.10";
+        public const string PluginVersion = "0.2.0";
 
         private Harmony _harmony;
         private ModConfig _modConfig;
@@ -35,9 +35,9 @@ namespace BerserkerSets
             {
                 _modConfig = new ModConfig(Config);
                 Manager = new LoadoutManager(Logger);
-                Panel = new LoadoutPanel(Manager, _modConfig);
-                Banner = new LoadoutBanner();
                 _input = new InputController(_modConfig, Logger);
+                Panel = new LoadoutPanel(Manager, _modConfig, _input);
+                Banner = new LoadoutBanner();
                 _harmony = new Harmony(PluginGuid);
                 _harmony.PatchAll(typeof(Plugin).Assembly);
                 Logger.LogInfo($"{PluginName} {PluginVersion} initialized.");
@@ -55,13 +55,15 @@ namespace BerserkerSets
             try
             {
                 Manager.TickCharacter();
-                int cycleDirection = _input.GetCycleDirection();
+                Panel.Tick();
+                // LB/RB and D-pad belong to inventory navigation while the panel is visible.
+                int cycleDirection = Panel.IsVisible ? 0 : _input.GetCycleDirection();
                 if (cycleDirection != 0)
                 {
                     Logger.LogInfo($"Cycle request received; direction={(cycleDirection > 0 ? "forward" : "backward")}.");
                     SwitchResult result = Manager.Cycle(cycleDirection);
                     Logger.LogInfo($"Cycle result: processed={result.Processed}, message='{result.Message ?? string.Empty}'.");
-                    if (!string.IsNullOrWhiteSpace(result.Message)) ShowSwitchHud(result.Message);
+                    if (!string.IsNullOrWhiteSpace(result.Message)) ShowSwitchHud(result);
                 }
             }
             catch (Exception ex)
@@ -95,10 +97,11 @@ namespace BerserkerSets
             if (MessageHud.instance != null) MessageHud.instance.ShowMessage(MessageHud.MessageType.TopLeft, message);
         }
 
-        private void ShowSwitchHud(string message)
+        private void ShowSwitchHud(SwitchResult result)
         {
+            string message = result?.Message;
             if (string.IsNullOrWhiteSpace(message) || _modConfig == null || !_modConfig.ShowHudNotifications.Value) return;
-            if (Banner == null || !Banner.Show(message)) ShowHud(message);
+            if (Banner == null || !Banner.Show(message, result.MainIcon, result.OffIcon)) ShowHud(message);
         }
 
         internal void DebugLog(string message)

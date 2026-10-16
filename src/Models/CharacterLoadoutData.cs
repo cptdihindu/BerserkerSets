@@ -5,7 +5,7 @@ namespace BerserkerSets.Models
 {
     public sealed class CharacterLoadoutData
     {
-        public const int CurrentSchemaVersion = 4;
+        public const int CurrentSchemaVersion = 5;
         public const int SetCount = 5;
 
         [JsonProperty("schemaVersion")]

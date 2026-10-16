@@ -28,6 +28,12 @@ Do these checks after you compile and install the DLL. Nothing in this repositor
 - Confirm cycling is blocked during inventory, map, pause, console, chat/text entry, death, sleep, teleport/loading, and intro/cutscene states.
 - Hold LB and press D-pad Right to cycle forward; verify Set 5 wraps to Set 1.
 - Hold LB and press D-pad Left to cycle backward; verify Set 1 wraps to Set 5.
+- With the inventory open, use LB/RB to cycle the vanilla sections and the Berserker Sets section. While its section is active, navigate its ten slots with D-pad, press A to choose a slot, select an inventory item, and press A again to assign it. Confirm D-pad never moves the vanilla grid and Berserker slots simultaneously.
+- Cycle sets in gameplay and verify the banner shows `Equipped Set N` plus the resolved main/off-hand icons without equipment-name text.
+- Switch between mouse/keyboard and controller while the inventory is open and verify the prompt keycaps update immediately.
+- Press B on a focused Berserker Sets slot to clear it; press B while choosing an inventory item to cancel assignment.
+- Drag the panel title and verify the new X/Y position survives inventory close/reopen and game restart; right-click the title to reset to `(0, 0)`.
+- Verify assigning a two-handed item beside a saved off-hand item is rejected, and assigning an off-hand item beside a saved two-handed item is rejected.
 - Test in single-player, as a multiplayer client, through death/respawn, portal travel, logout, and world changes.
 
 ## What to include in an error report

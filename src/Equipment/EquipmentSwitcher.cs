@@ -11,8 +11,11 @@ namespace BerserkerSets.Equipment
     {
         public bool Processed { get; private set; }
         public string Message { get; private set; }
+        public Sprite MainIcon { get; private set; }
+        public Sprite OffIcon { get; private set; }
 
-        public static SwitchResult Done(string message) => new SwitchResult { Processed = true, Message = message };
+        public static SwitchResult Done(string message, Sprite mainIcon = null, Sprite offIcon = null) =>
+            new SwitchResult { Processed = true, Message = message, MainIcon = mainIcon, OffIcon = offIcon };
         public static SwitchResult Blocked(string message) => new SwitchResult { Processed = false, Message = message };
     }
 
@@ -102,7 +105,7 @@ namespace BerserkerSets.Equipment
                 _log.LogInfo(
                     $"Set {setIndex + 1} applied: mainResolved={main != null}, offResolved={off != null}, " +
                     $"mainMissing={mainMissing}, offMissing={offMissing}, offSuppressed={suppressOff}.");
-                return SwitchResult.Done(message);
+                return SwitchResult.Done(message, main?.GetIcon(), suppressOff ? null : off?.GetIcon());
             }
             catch (Exception ex)
             {
@@ -174,8 +177,8 @@ namespace BerserkerSets.Equipment
             else if (off != null) parts.Add(ItemResolver.GetDisplayName(off));
             else if (offMissing) parts.Add("Missing off-hand item");
 
-            if (parts.Count == 0) return $"Set {index + 1} (Empty)";
-            return $"Equipped Set {index + 1}: {string.Join(" + ", parts)}";
+            if (parts.Count == 0) return $"Equipped Set {index + 1} (Empty)";
+            return $"Equipped Set {index + 1}";
         }
 
         private static string Describe(LoadoutItemReference reference)

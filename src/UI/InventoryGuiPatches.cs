@@ -38,5 +38,19 @@ namespace BerserkerSets.UI
             }
             return true;
         }
+
+        [HarmonyPatch(typeof(InventoryGui), "UpdateGamepad")]
+        [HarmonyPrefix]
+        private static bool UpdateGamepadPrefix()
+        {
+            return !(Plugin.Instance?.Panel?.HandleGamepadInput() ?? false);
+        }
+
+        [HarmonyPatch(typeof(InventoryGui), "Update")]
+        [HarmonyPrefix]
+        private static bool UpdatePrefix()
+        {
+            return !(Plugin.Instance?.Panel?.HandleEarlyCancelInput() ?? false);
+        }
     }
 }

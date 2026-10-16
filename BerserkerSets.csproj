@@ -12,12 +12,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="inspect\**\*.cs" />
     <Reference Include="BepInEx" HintPath="$(ValheimDir)\BepInEx\core\BepInEx.dll" Private="false" />
     <Reference Include="0Harmony" HintPath="$(ValheimDir)\BepInEx\core\0Harmony.dll" Private="false" />
     <Reference Include="Jotunn" HintPath="$(ValheimDir)\BepInEx\plugins\Jotunn.dll" Private="false" />
     <Reference Include="Assembly-CSharp" HintPath="$(ValheimDir)\valheim_Data\Managed\Assembly-CSharp.dll" Private="false" />
     <Reference Include="assembly_utils" HintPath="$(ValheimDir)\valheim_Data\Managed\assembly_utils.dll" Private="false" />
     <Reference Include="assembly_valheim" HintPath="$(ValheimDir)\valheim_Data\Managed\assembly_valheim.dll" Private="false" />
+    <Reference Include="assembly_guiutils" HintPath="$(ValheimDir)\valheim_Data\Managed\assembly_guiutils.dll" Private="false" />
     <Reference Include="UnityEngine" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.CoreModule.dll" Private="false" />
     <Reference Include="UnityEngine.UI" HintPath="$(ValheimDir)\valheim_Data\Managed\UnityEngine.UI.dll" Private="false" />

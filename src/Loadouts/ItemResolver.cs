@@ -42,7 +42,8 @@ namespace BerserkerSets.Loadouts
             {
                 ItemId = id,
                 PrefabName = GetPrefabName(selected),
-                DisplayName = GetDisplayName(selected)
+                DisplayName = GetDisplayName(selected),
+                TwoHanded = ItemEligibility.IsTwoHanded(selected)
             };
             _log.LogInfo(
                 $"Captured item reference: name='{captured.DisplayName}', prefab='{captured.PrefabName}', " +

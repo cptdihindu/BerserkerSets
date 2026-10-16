@@ -47,6 +47,7 @@ namespace BerserkerSets.Loadouts
             _player = current;
             _characterId = id;
             _data = _storage.Load(id);
+            MigrateTwoHandedFlags();
             int configuredSlots = 0;
             foreach (LoadoutSet set in _data.Sets)
             {
@@ -96,6 +97,25 @@ namespace BerserkerSets.Loadouts
                 return false;
             }
 
+            LoadoutSet set = _data.Sets[setIndex];
+            if (slot == LoadoutSlot.MainHand && ItemEligibility.IsTwoHanded(item) && set.OffHand != null)
+            {
+                message = $"Set {setIndex + 1}: clear the off-hand slot before assigning a two-handed item.";
+                _log.LogWarning(message);
+                return false;
+            }
+            if (slot == LoadoutSlot.OffHand && set.MainHand != null)
+            {
+                bool duplicate;
+                ItemDrop.ItemData savedMain = _resolver.Resolve(_player, set.MainHand, out duplicate);
+                if (set.MainHand.TwoHanded || (savedMain != null && ItemEligibility.IsTwoHanded(savedMain)))
+                {
+                    message = $"Set {setIndex + 1}: an off-hand item cannot be paired with the saved two-handed item.";
+                    _log.LogWarning(message);
+                    return false;
+                }
+            }
+
             LoadoutItemReference captured = _resolver.Capture(_player, item);
             if (captured == null || string.IsNullOrEmpty(captured.PrefabName))
             {
@@ -103,7 +123,6 @@ namespace BerserkerSets.Loadouts
                 return false;
             }
 
-            LoadoutSet set = _data.Sets[setIndex];
             LoadoutItemReference other = slot == LoadoutSlot.MainHand ? set.OffHand : set.MainHand;
             if (other != null && other.ItemId == captured.ItemId)
             {
@@ -181,6 +200,23 @@ namespace BerserkerSets.Loadouts
                 if (set?.OffHand != null) count++;
             }
             return count;
+        }
+
+        private void MigrateTwoHandedFlags()
+        {
+            bool changed = false;
+            for (int index = 0; index < _data.Sets.Count; index++)
+            {
+                LoadoutItemReference reference = _data.Sets[index].MainHand;
+                if (reference == null || reference.TwoHanded) continue;
+                bool duplicate;
+                ItemDrop.ItemData item = _resolver.Resolve(_player, reference, out duplicate);
+                if (item == null || !ItemEligibility.IsTwoHanded(item)) continue;
+                reference.TwoHanded = true;
+                _storage.SaveSlot(_data.CharacterId, index, LoadoutSlot.MainHand, reference);
+                changed = true;
+            }
+            if (changed) _storage.Save(_data);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace BerserkerSets.Models
         [JsonProperty("displayName")]
         public string DisplayName { get; set; } = string.Empty;
 
+        [JsonProperty("twoHanded")]
+        public bool TwoHanded { get; set; }
+
         [JsonIgnore]
         public bool IsConfigured => !string.IsNullOrWhiteSpace(ItemId) && !string.IsNullOrWhiteSpace(PrefabName);
     }
